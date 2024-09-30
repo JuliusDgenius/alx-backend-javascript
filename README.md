@@ -1,7 +1,7 @@
 This repository is for SE back-end specialization track at alx.
 
-* - 0x00-ES6_basic - This directory cover the basics of JavaScript ES6.
-    * - At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+* 0x00-ES6_basic - This directory cover the basics of JavaScript ES6.
+    * At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 
         What ES6 is
         New features introduced in ES6
