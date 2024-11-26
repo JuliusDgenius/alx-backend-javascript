@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function countStudents(filename) {
+module.exports = function countStudents (filename) {
   try {
     // Resolve directory and find the first .csv file
     const directory = path.dirname(path.resolve(__dirname, filename));
