@@ -1,36 +1,58 @@
 const fs = require('fs');
+const path = require('path');
 
-module.exports = function countStudents (path) {
+module.exports = function countStudents(filename) {
   try {
-    // read data
-    const data = fs.readFileSync(path, { encoding: 'utf-8' });
-    // split data and taking only list without header
-    const lines = data.split('\n').slice(1, -1);
-    // give the header of data
-    const header = data.split('\n').slice(0, 1)[0].split(',');
-    // find firstname and field index
-    const idxFn = header.findIndex((ele) => ele === 'firstname');
-    const idxFd = header.findIndex((ele) => ele === 'field');
-    // declarate two dictionaries for count each fields and store list of students
+    // Resolve directory and find the first .csv file
+    const directory = path.dirname(path.resolve(__dirname, filename));
+    const files = fs.readdirSync(directory);
+
+    // Locate a .csv file in the directory
+    const csvFile = files.find((file) => path.extname(file) === '.csv');
+    if (!csvFile) {
+      throw new Error('No .csv file found in the directory.');
+    }
+
+    // Resolve full path to the .csv file
+    const csvPath = path.join(directory, csvFile);
+
+    // Read and process file content
+    const data = fs.readFileSync(csvPath, 'utf-8');
+    const lines = data.trim().split('\n');
+    if (lines.length <= 1) {
+      throw new Error('The file is empty or only contains headers.');
+    }
+
+    // Extract header and indices
+    const header = lines[0].split(',');
+    const idxFn = header.indexOf('firstname');
+    const idxFd = header.indexOf('field');
+    if (idxFn === -1 || idxFd === -1) {
+      throw new Error('Missing required headers: "firstname" or "field".');
+    }
+
+    // Process student data
     const fields = {};
     const students = {};
-
-    lines.forEach((line) => {
-      const list = line.split(',');
-      if (!fields[list[idxFd]]) fields[list[idxFd]] = 0;
-      fields[list[idxFd]] += 1;
-      if (!students[list[idxFd]]) students[list[idxFd]] = '';
-      students[list[idxFd]] += students[list[idxFd]] ? `, ${list[idxFn]}` : list[idxFn];
+    lines.slice(1).forEach((line) => {
+      const values = line.split(',');
+      const field = values[idxFd];
+      const firstname = values[idxFn];
+      fields[field] = (fields[field] || 0) + 1;
+      students[field] = students[field]
+        ? `${students[field]}, ${firstname}`
+        : firstname;
     });
 
-    console.log(`Number of students: ${lines.length}`);
-    for (const key in fields) {
-      if (Object.hasOwnProperty.call(fields, key)) {
-        const element = fields[key];
-        console.log(`Number of students in ${key}: ${element}. List: ${students[key]}`);
-      }
+    // Output results
+    console.log(`Number of students: ${lines.length - 1}`);
+    for (const field of Object.keys(fields)) {
+      console.log(
+        `Number of students in ${field}: ${fields[field]}. List: ${students[field]}`
+      );
     }
   } catch (error) {
+    console.error(error.message);
     throw new Error('Cannot load the database');
   }
 };
