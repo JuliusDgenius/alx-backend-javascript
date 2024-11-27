@@ -5,7 +5,7 @@ const path = require('path');
  * Counts students from a CSV file and logs the results.
  * @param {string} filename - The path to the CSV file.
  */
-module.exports = function countStudents (filename) {
+module.exports = function countStudentss(filename) {
   try {
     const resolvedFilename = path.resolve(__dirname, filename);
     const data = fs.readFileSync(resolvedFilename, 'utf-8');
