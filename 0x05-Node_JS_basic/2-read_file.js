@@ -4,20 +4,10 @@ const path = require('path');
 module.exports = function countStudents (filename) {
   try {
     // Resolve directory and find the first .csv file
-    const directory = path.dirname(path.resolve(__dirname, filename));
-    const files = fs.readdirSync(directory);
-
-    // Locate a .csv file in the directory
-    const csvFile = files.find((file) => path.extname(file) === '.csv');
-    if (!csvFile) {
-      throw new Error('No .csv file found in the directory.');
-    }
-
-    // Resolve full path to the .csv file
-    const csvPath = path.join(directory, csvFile);
-
+    filename = path.resolve(__dirname, filename);
+  
     // Read and process file content
-    const data = fs.readFileSync(csvPath, 'utf-8');
+    const data = fs.readFileSync(filename, 'utf-8');
     const lines = data.trim().split('\n');
     if (lines.length <= 1) {
       throw new Error('The file is empty or only contains headers.');
