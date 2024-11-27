@@ -1,19 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function countStudents (filename) {
+/**
+ * Counts students from a CSV file and logs the results.
+ * @param {string} filename - The path to the CSV file.
+ */
+module.exports = function countStudents(filename) {
   try {
-    // Resolve directory and find the first .csv file
-    filename = path.resolve(__dirname, filename);
-
-    // Read and process file content
-    const data = fs.readFileSync(filename, 'utf-8');
+    const resolvedFilename = path.resolve(__dirname, filename);
+    const data = fs.readFileSync(resolvedFilename, 'utf-8');
     const lines = data.trim().split('\n');
     if (lines.length <= 1) {
       throw new Error('The file is empty or only contains headers.');
     }
 
-    // Extract header and indices
     const header = lines[0].split(',');
     const idxFn = header.indexOf('firstname');
     const idxFd = header.indexOf('field');
@@ -21,7 +21,6 @@ module.exports = function countStudents (filename) {
       throw new Error('Missing required headers: "firstname" or "field".');
     }
 
-    // Process student data
     const fields = {};
     const students = {};
     lines.slice(1).forEach((line) => {
@@ -34,15 +33,14 @@ module.exports = function countStudents (filename) {
         : firstname;
     });
 
-    // Output results
     console.log(`Number of students: ${lines.length - 1}`);
-    for (const field of Object.keys(fields)) {
+    Object.entries(fields).forEach(([field, count]) => {
       console.log(
-        `Number of students in ${field}: ${fields[field]}. List: ${students[field]}`
+        `Number of students in ${field}: ${count}. List: ${students[field]}`
       );
-    }
+    });
   } catch (error) {
-    console.error(error.message);
+    console.error(`Error: ${error.message}`);
     throw new Error('Cannot load the database');
   }
 };
