@@ -5,7 +5,7 @@ module.exports = function countStudents (filename) {
   try {
     // Resolve directory and find the first .csv file
     filename = path.resolve(__dirname, filename);
-  
+
     // Read and process file content
     const data = fs.readFileSync(filename, 'utf-8');
     const lines = data.trim().split('\n');
