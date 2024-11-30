@@ -1,58 +1,27 @@
 const assert = require('assert');
 const calculateNumber = require('./0-calcul');
 
-describe('calculateNumber', function () {
-  describe('Two Integers', function () {
-    it('should return 4', function () {
-      assert.strictEqual(calculateNumber(1, 3), 4);
-    });
+describe('calculateNumber', () => {
+  it('should return sum of rounded numbers', () => {
+    assert.strictEqual(calculateNumber(1, 3), 4);
+    assert.strictEqual(calculateNumber(1, 3.7), 5);
+    assert.strictEqual(calculateNumber(1.2, 3.7), 5);
+    assert.strictEqual(calculateNumber(1.5, 3.7), 6);
   });
 
-  describe('One round', function () {
-    it('should return 5', function () {
-      assert.strictEqual(calculateNumber(1, 3.7), 5);
-    });
+  it('should handle negative numbers', () => {
+    assert.strictEqual(calculateNumber(-1.5, -3.7), -5);
+    assert.strictEqual(calculateNumber(-1.4, 3.7), 3);
   });
 
-  describe('One round 2', function () {
-    it('should return 5', function () {
-      assert.strictEqual(calculateNumber(3.7, 1), 5);
-    });
+  it('should handle zero values', () => {
+    assert.strictEqual(calculateNumber(0, 0), 0);
+    assert.strictEqual(calculateNumber(0.1, 0.4), 0);
+    assert.strictEqual(calculateNumber(0.5, 0.5), 2);
   });
 
-  describe('One round floor', function () {
-    it('should return 4', function () {
-      assert.strictEqual(calculateNumber(1, 3.3), 4);
-    });
-  });
-
-  describe('One round floor 2', function () {
-    it('should return 4', function () {
-      assert.strictEqual(calculateNumber(3.3, 1), 4);
-    });
-  });
-
-  describe('Two round', function () {
-    it('should return 5', function () {
-      assert.strictEqual(calculateNumber(1.2, 3.7), 5);
-    });
-  });
-
-  describe('Two round again', function () {
-    it('should return 6', function () {
-      assert.strictEqual(calculateNumber(1.5, 3.7), 6);
-    });
-  });
-
-  describe('Two round reversed', function () {
-    it('should return 5', function () {
-      assert.strictEqual(calculateNumber(3.7, 1.2), 5);
-    });
-  });
-
-  describe('Two round again floor both', function () {
-    it('should return 3', function () {
-      assert.strictEqual(calculateNumber(1.2, 2.1), 3);
-    });
+  it('should handle floating point numbers', () => {
+    assert.strictEqual(calculateNumber(2.6, 2.6), 6);
+    assert.strictEqual(calculateNumber(2.499, 3.499), 5);
   });
 });
