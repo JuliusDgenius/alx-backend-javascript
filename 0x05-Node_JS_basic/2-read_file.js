@@ -36,7 +36,7 @@ module.exports = function countStudentss(filename) {
     console.log(`Number of students: ${lines.length - 1}`);
     Object.entries(fields).forEach(([field, count]) => {
       console.log(
-        `Number of students in ${field}: ${count}. List: ${students[field]}`
+        `Number of students in ${field}: ${count}. List: ${students[field]}`,
       );
     });
   } catch (error) {
