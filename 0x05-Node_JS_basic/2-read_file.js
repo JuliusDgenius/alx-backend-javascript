@@ -40,7 +40,6 @@ module.exports = function countStudentss(filename) {
       );
     });
   } catch (error) {
-    console.error(`Error: ${error.message}`);
     throw new Error('Cannot load the database');
   }
 };
